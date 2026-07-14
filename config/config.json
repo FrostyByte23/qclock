@@ -1,0 +1,10 @@
+{
+  "BorderColor": "#FF0000",
+  "HeaderColor": "purple",
+  "TimeColor": "cyan",
+  "MilitaryTime": true,
+  "RoundedCorners": true,
+
+  "_comm1": "You can submit colors as hex codes, rgb, and the css color names, border should be hex.",
+  "_comm2": "https://github.com/bahamas10/css-color-names/blob/master/css-color-names.json for a list of named colors"
+}
