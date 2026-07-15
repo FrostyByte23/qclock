@@ -7,4 +7,6 @@
 
 `qclock` uses the MIT license so you may redistribute or modify; however, you must credit me and include the full license text in your project.
 
+To install `qclock` on Linux run install.sh and make sure ~/.local/bin is in your PATH.
+
 
