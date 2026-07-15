@@ -11,13 +11,13 @@ echo "Installing $APP_NAME..."
 
 # Check dependencies
 for cmd in git dotnet; do
-    if ! command -v "$cmd" &> /dev/null; then
+    if ! command -v "$cmd" >/dev/null 2>&1; then
         echo "Error: $cmd is not installed."
         exit 1
     fi
 done
 
-# Clean old temp build
+# Remove any previous temporary build
 rm -rf "$TMP_DIR"
 
 echo "Cloning repository..."
@@ -49,7 +49,6 @@ esac
 
 echo "Building for $RID..."
 
-# Build
 dotnet publish \
     -c Release \
     -r "$RID" \
@@ -57,22 +56,33 @@ dotnet publish \
     -p:PublishSingleFile=true \
     -o ./build
 
-# Install
+# Install executable
 mkdir -p "$INSTALL_DIR"
 
-cp "./build/$APP_NAME" "$INSTALL_DIR/$APP_NAME"
+cp "./build/quick-clock" "$INSTALL_DIR/qclock"
+chmod +x "$INSTALL_DIR/qclock"
 
-chmod +x "$INSTALL_DIR/$APP_NAME"
+# Install config directory if it exists
+if [ -d "./build/config" ]; then
+    mkdir -p "$INSTALL_DIR/config"
+    cp -r ./build/config/* "$INSTALL_DIR/config/"
+fi
 
 # Cleanup
+cd /
 rm -rf "$TMP_DIR"
 
 echo
-echo "$APP_NAME installed!"
-echo "Run it with: $APP_NAME"
+echo "✅ $APP_NAME installed!"
 
 if [[ ":$PATH:" != *":$INSTALL_DIR:"* ]]; then
     echo
-    echo "Add this to your shell config:"
+    echo "⚠️  $INSTALL_DIR is not in your PATH."
+    echo "Add this line to your shell configuration:"
+    echo
     echo 'export PATH="$HOME/.local/bin:$PATH"'
 fi
+
+echo
+echo "Run it with:"
+echo "  qclock"
